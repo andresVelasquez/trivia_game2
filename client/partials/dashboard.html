@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <script type="text/ng-template" id="loginPopup">
+      <h1>Please enter name:</h1>
+      <form ng-submit="closeThisDialog(login())">
+        <input type="text" ng-model="player.name" required>
+        <input type="submit" name="submit" value="Submit">
+      </form>
+    </script>
+    <script type="text/ng-template" id="playPopup">
+      <h1>Please enter name:</h1>
+      <form ng-submit="closeThisDialog(play())">
+        <input type="text" ng-model="player.name" required>
+        <input type="submit" name="submit" value="Submit">
+      </form>
+    </script>
+  </head>
+  <body>
+    <a href="#!/new_question">Add New Question</a><span ng-show="loggedIn"> | <a href="#!/logout">Logout</a></span><br>
+    <input type="button" ng-click="playButton()" value="Play!">
+    <h1 ng-show="loggedIn">Welcome to Trivia {{player.name}}!</h1>
+    <div class="results" ng-show="gameExists">
+      <h2>You scored {{player.correct}}/{{player.total}} ({{+((player.correct / player.total).toFixed(4)) * 100}}%)</h2>
+    </div>
+    <div class="">
+      <input type="text" ng-model="searchText" placeholder="Search Scores">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="game in games | orderBy: 'percent' : true | filter:searchText">
+            <td>{{game._player.name}}</td>
+            <td>{{game.correct}}/{{game.total}}</td>
+            <td>{{game.percent}}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Let's Play!</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() { // have to wait until DOM is created or the .questions div count will be 0 because it's not rendered yet
+        for(var z = 0; z < 10; z++){
+          $(function () {
+            for(var i = 0; i < $('div.questions').length; i++) { // ng-model will add a questions class to each question div so i can count the number of questions there are here
+              var parent = $("#shuffle" + i); // each question is enumerated by $index which i append to "shuffle" in the id= field. here i append the current "i" to the word "shuffle" to match the id of div being shuffled
+              var ptags = parent.children();
+              while (ptags.length) {
+                parent.append(ptags.splice(Math.floor(Math.random() * ptags.length), 1)[0]); // need to review my jquery so i can figure this out. not really jquery though, i think it's just shuffling the array of <p>'s
+              };
+            }
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Good luck {{player.name}}!</h1>
+    <div ng-repeat="question in questions">
+      {{$index + 1}}. {{question.question}}<br>
+      <div class="questions" id="shuffle{{$index}}"> <!-- this will let me have a predictable unique id for each question so i can use above jquery to shuffle the answer <p>'s -->
+        <p><input type="radio" ng-model="question.given" value="{{question.answer}}"> {{question.answer}}</p>
+        <p><input type="radio" ng-model="question.given" value="{{question.fake1}}"> {{question.fake1}}</p>
+        <p><input type="radio" ng-model="question.given" value="{{question.fake2}}"> {{question.fake2}}</p>
+      </div><hr>
+    </div>
+    <input type="button" value="Finished!" ng-click="check()">
+  </body>
+</html>
